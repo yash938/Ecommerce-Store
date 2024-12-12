@@ -1,5 +1,6 @@
 package com.Ecommerce.web.application.Dto;
 
+import com.Ecommerce.web.application.Model.Deal;
 import com.Ecommerce.web.application.Model.HomeCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
