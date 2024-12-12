@@ -3,10 +3,7 @@ package com.Ecommerce.web.application.Model;
 import com.Ecommerce.web.application.Domain.USER_ROLE;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,4 +31,5 @@ public class User {
     @JsonIgnore
 
     private Set<Coupon> usedCoupon = new HashSet<>();
+
 }
