@@ -1,8 +1,6 @@
 package com.Ecommerce.web.application.Controller;
 
-import com.Ecommerce.web.application.Dto.JwtRequest;
-import com.Ecommerce.web.application.Dto.JwtResponse;
-import com.Ecommerce.web.application.Dto.UserDto;
+import com.Ecommerce.web.application.Dto.*;
 import com.Ecommerce.web.application.Security.JwtHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,10 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +27,8 @@ public class AuthController {
     private JwtHelper helper;
     @Autowired
     private UserDetailsService userDetailsService;
+
+
 
     @Autowired
     private ModelMapper modelMapper;
@@ -48,6 +45,8 @@ public class AuthController {
         return new ResponseEntity<>(tokenCreated, HttpStatus.CREATED);
     }
 
+
+
     private void doAuthenticate(String email, String password) {
         try{
             Authentication authentication = new UsernamePasswordAuthenticationToken(email,password);
@@ -55,5 +54,9 @@ public class AuthController {
             ex.getMessage();
         }
     }
-    }
+
+
+
+
+}
 
