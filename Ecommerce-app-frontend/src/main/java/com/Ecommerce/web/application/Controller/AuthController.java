@@ -1,7 +1,9 @@
 package com.Ecommerce.web.application.Controller;
 
 import com.Ecommerce.web.application.Dto.*;
+import com.Ecommerce.web.application.Model.User;
 import com.Ecommerce.web.application.Security.JwtHelper;
+import com.Ecommerce.web.application.Service.RefreshTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ public class AuthController {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,9 +43,26 @@ public class AuthController {
         UserDetails user = userDetailsService.loadUserByUsername(jwtRequest.getEmail());
 
         String token = helper.generateToken(user);
+        RefreshTokenDto refreshToken = refreshTokenService.createRefreshToken(user.getUsername());
 
-        JwtResponse tokenCreated = JwtResponse.builder().token(token).user(modelMapper.map(user, UserDto.class)).build();
+
+
+        JwtResponse tokenCreated = JwtResponse.builder().refreshTokenDto(refreshToken).token(token).user(modelMapper.map(user, UserDto.class)).build();
         return new ResponseEntity<>(tokenCreated, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/generateRefreshToken")
+    public ResponseEntity<JwtResponse> generateRefreshToken(@RequestBody RefreshToken refreshToken){
+        RefreshTokenDto byToken = refreshTokenService.findByToken(refreshToken.getRefreshToken());
+        RefreshTokenDto refreshTokenDto = refreshTokenService.verifyToken(byToken);
+
+
+        UserDto user = refreshTokenService.getUser(refreshTokenDto);
+        String s = helper.generateToken(modelMapper.map(user, User.class));
+
+        JwtResponse build = JwtResponse.builder().token(s).refreshTokenDto(byToken).user(user).build();
+        return ResponseEntity.ok(build);
+
     }
 
 
